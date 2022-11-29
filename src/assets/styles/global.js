@@ -12,8 +12,11 @@ export default createGlobalStyle`
 
     body {
         // acessando um tema criado atráves das props
-        background: ${({ theme }) => theme.backgroundColor};
+        background: ${({ theme }) => theme.colors.background};
         font-size: 16px;
+
+        //sempre que uma chave é uma numeral, é necessário coloca-la em um [] quando for chama-la
+        color: ${({ theme }) => theme.colors.gray[900]};
     }
 
     button {
