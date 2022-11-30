@@ -1,25 +1,25 @@
 import  GlobalStyles from '../../assets/styles/global'
 import { ThemeProvider} from 'styled-components'
 import defaultTheme from '../../assets/styles/themes/default'
-
+import { BrowserRouter } from 'react-router-dom'
 import { Container } from './styles'
 import Header from '../Header'
-
-import ContactsList from '../ContactsList'
+import Routes from '../../routes'
 
 
 function App() {
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <GlobalStyles />
+    <BrowserRouter>
+        <ThemeProvider theme={defaultTheme}>
+        <GlobalStyles />
 
-        <Container>
-            <Header />
-            <ContactsList />
-        </Container>
+            <Container>
+                <Header />
+                <Routes />
+            </Container>
 
-    </ThemeProvider>
-
+        </ThemeProvider>
+    </BrowserRouter>
   );
 }
 

@@ -3,12 +3,32 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     margin-top: 32px;
-`
+    `
 
+export const InputSearchContainer = styled.div`
+    width: 100%;
+
+    input {
+        width: 100%;
+        background: #fff;
+        border: none;
+        border-radius: 25px;
+        height: 50px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+        outline: 0;
+        padding: 0px 16px;
+
+        &::placeholder {
+            color: #bcbcbc;
+        }
+    }
+`
 export const Header = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 32px;
+
 
     strong {
         font-size: 24px;
@@ -21,11 +41,9 @@ export const Header = styled.header`
         padding: 8px 16px;
         border-radius: 4px;
         transition: all 0.2s ease-in;
-
         &:hover {
             background: ${({ theme }) => theme.colors.primary.main};
             color: #fff;
-
         }
     }
 `
@@ -33,7 +51,6 @@ export const Header = styled.header`
 
 export const ListContainer = styled.div`
     margin-top: 24px;
-
     header {
         margin-bottom: 8px;
         button {
@@ -42,7 +59,6 @@ export const ListContainer = styled.div`
             display: flex;
             align-items: center;
         }
-
         span {
             margin-right: 8px;
             font-weight: bold;
@@ -58,26 +74,19 @@ export const Card = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-
     /**
     Se houver dois elementos em sequencia, será aplicada a regra de margem com X pixels (nesse caso).
-
     Exemplo: Se houver um card em cima de outro card, o margin-top vai ser de 16px,
     se não, vai ser de 8px, que é o valor aplicado no margin-bottom do header do ListContainer.
-
     É para isso que serve o & + &
     */
-
     & + & {
         margin-top: 16px;
     }
-
     .info {
         .contact-name {
             display: flex;
             align-items: center;
-
             small {
                 background: ${({ theme }) => theme.colors.primary.lighter};
                 color: ${({ theme }) => theme.colors.primary.main};
@@ -88,23 +97,20 @@ export const Card = styled.div`
                 margin-left: 8px;
             }
         }
-
         span {
             display: block;
             font-size: 14px;
             color: ${({ theme }) => theme.colors.gray[200]}
         }
     }
-
     .actions {
         display: flex;
         align-items: center;
-
         button {
             background: transparent;
             border: none;
             margin-left: 8px;
         }
     }
-
 `
+
