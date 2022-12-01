@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import {
     Container,
     Header,
@@ -22,7 +24,7 @@ export default function Home(){
 
             <Header>
                 <strong>3 Contatos</strong>
-                <a href='/'>Novo Contato</a>
+                <Link to='/new'>Novo Contato</Link>
             </Header>
 
 
@@ -45,52 +47,9 @@ export default function Home(){
                     </div>
 
                     <div className='actions'>
-                        <a href='/'>
+                        <Link to='/edit/123'>
                             <img src={edit} alt='edit'></img>
-                        </a>
-
-                        <button type='button'>
-                            <img src={trash} alt='delete'></img>
-                        </button>
-                    </div>
-                </Card>
-
-                <Card>
-                    <div className='info'>
-                        <div className='contact-name'>
-                            <strong>Joao Paulo</strong>
-                            <small>Instagram</small>
-                        </div>
-                        <span>joao@teste.com</span>
-                        <span>(41) 99999-9999</span>
-                    </div>
-
-                    <div className='actions'>
-                        <a href='/'>
-                            <img src={edit} alt='edit'></img>
-                        </a>
-
-                        <button type='button'>
-                            <img src={trash} alt='delete'></img>
-                        </button>
-                    </div>
-                </Card>
-
-
-                <Card>
-                    <div className='info'>
-                        <div className='contact-name'>
-                            <strong>Joao Paulo</strong>
-                            <small>Instagram</small>
-                        </div>
-                        <span>joao@teste.com</span>
-                        <span>(41) 99999-9999</span>
-                    </div>
-
-                    <div className='actions'>
-                        <a href='/'>
-                            <img src={edit} alt='edit'></img>
-                        </a>
+                        </Link>
 
                         <button type='button'>
                             <img src={trash} alt='delete'></img>
