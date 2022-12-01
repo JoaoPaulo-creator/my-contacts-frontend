@@ -12,10 +12,18 @@ import {
 import arrow from '../../assets/images/icons/arrow.svg'
 import edit from '../../assets/images/icons/edit.svg'
 import trash from '../../assets/images/icons/trash.svg'
+import Modal from '../../components/Modal'
 
 export default function Home(){
     return (
         <Container>
+            {/*
+                Quando um parâmetro boolean é passado no meu componente,
+                por exemplo o danger, ele sempre será true.
+                Para que esse valor seja falso, será necessário explicitar.
+                Sendo assim, o parâmetro falso deveria ser escrito: danger={false}
+                */}
+            <Modal danger />
 
             <InputSearchContainer>
                 <input type="text" placeholder="Pesquise pelo nome"/>
