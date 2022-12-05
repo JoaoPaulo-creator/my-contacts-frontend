@@ -13,6 +13,7 @@ import arrow from '../../assets/images/icons/arrow.svg'
 import edit from '../../assets/images/icons/edit.svg'
 import trash from '../../assets/images/icons/trash.svg'
 import Modal from '../../components/Modal'
+import Loader from '../../components/Locader'
 
 export default function Home(){
     return (
@@ -23,7 +24,8 @@ export default function Home(){
                 Para que esse valor seja falso, será necessário explicitar.
                 Sendo assim, o parâmetro falso deveria ser escrito: danger={false}
                 */}
-            <Modal danger />
+            {/* <Modal danger /> */}
+            <Loader />
 
             <InputSearchContainer>
                 <input type="text" placeholder="Pesquise pelo nome"/>
