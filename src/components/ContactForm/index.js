@@ -7,14 +7,23 @@ import Button from '../Button'
 
 
 export default function ContactForm({ buttonLabel }){
+
+
+
+
     return (
         <Form>
             <FormGroup>
-                <Input placeholder='Nome'/>
+                <Input
+                    placeholder='Nome'
+                    onChange={() => console.log('Digitou...')}
+                />
             </FormGroup>
 
-            <FormGroup>
-                <Input placeholder='Email'/>
+            <FormGroup
+                error="O formato do email é inválido"
+            >
+                <Input placeholder='Email' error/>
             </FormGroup>
             <FormGroup>
                 <Input placeholder='Telefone'/>
