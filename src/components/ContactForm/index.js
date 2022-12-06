@@ -1,3 +1,5 @@
+import isEmailValid from '../../utils/isEmailValid'
+
 import { Form, ButtonContainer } from './styles'
 import PropTypes from 'prop-types'
 import FormGroup from '../FormGroup'
@@ -31,7 +33,32 @@ export default function ContactForm({ buttonLabel }){
         }
     }
 
+    function handleEmailChange(event) {
+        setEmail(event.target.value)
+
+        if(event.target.value && !isEmailValid(event.target.value)){
+            // verificando se erro já existe
+            const errorAlreadyExists = errors.find((error) => error.field === 'email')
+
+            if (errorAlreadyExists){
+                return
+            }
+
+
+            setErrors((prevState) => [
+                ...prevState,
+                {field: 'email', message: 'E-mail é obrigatório'}
+            ])
+        }else{
+            setErrors((prevState) => prevState.filter(
+                (error) => error.field !== 'email'
+            ))
+        }
+    }
+
     console.log(errors)
+
+//    console.log(errors)
 
     function handleSubmit(event){
         event.preventDefault()
@@ -58,7 +85,7 @@ export default function ContactForm({ buttonLabel }){
                 <Input
                     placeholder='E-mail'
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={handleEmailChange}
                 />
             </FormGroup>
             <FormGroup>
