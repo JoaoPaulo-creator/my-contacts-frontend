@@ -4,33 +4,77 @@ import FormGroup from '../FormGroup'
 import Input from '../Input'
 import Select from '../Select'
 import Button from '../Button'
+import { useState } from 'react'
 
 
 export default function ContactForm({ buttonLabel }){
 
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [category, setCategory] = useState('')
+    const [errors, setErrors] = useState([])
 
+
+    function handleNameChange(event){
+        setName(event.target.value)
+
+        if(!event.target.value){
+            setErrors((prevState) => [
+                ...prevState,
+                {field: 'name', message: 'Nome é obrigatório'}
+            ])
+        }else {
+            setErrors((prevState) => prevState.filter(
+                (error) => error.field !== 'name'
+            ))
+        }
+    }
+
+    console.log(errors)
+
+    function handleSubmit(event){
+        event.preventDefault()
+        console.log({
+            name, email, phone, category
+        })
+    }
 
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
+
             <FormGroup>
                 <Input
                     placeholder='Nome'
-                    onChange={() => console.log('Digitou...')}
+                    value={name}
+                    onChange={handleNameChange}
                 />
             </FormGroup>
 
             <FormGroup
-                error="O formato do email é inválido"
+                // error="O formato do email é inválido"
             >
-                <Input placeholder='Email' error/>
+                <Input
+                    placeholder='E-mail'
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                />
             </FormGroup>
             <FormGroup>
-                <Input placeholder='Telefone'/>
+                <Input
+                    placeholder='Telefone'
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                />
             </FormGroup>
 
             <FormGroup>
-                <Select>
+                <Select
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
+                >
+                    <option value=''>Categoria</option>
                     <option value='Instragram'>Instragram</option>
                     <option value='LinkdIn'>LinkdIn</option>
                     <option value='Twitter'>Twitter</option>
