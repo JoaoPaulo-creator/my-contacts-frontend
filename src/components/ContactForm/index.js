@@ -51,7 +51,12 @@ export default function ContactForm({ buttonLabel }){
 
 
     return (
-        <Form onSubmit={handleSubmit}>
+
+        /*
+        noValidate é usado para que o html não realize a validação, para que não quebre a execução da aplicação
+        caso já exista uma função para isso
+        */
+        <Form onSubmit={handleSubmit} noValidate>
 
             <FormGroup
                 error={getErrorByFieldName('name')}
@@ -68,6 +73,7 @@ export default function ContactForm({ buttonLabel }){
                 error={getErrorByFieldName('email')}
             >
                 <Input
+                    type="email"
                     error={getErrorByFieldName('email')}
                     placeholder='E-mail'
                     value={email}
@@ -76,6 +82,7 @@ export default function ContactForm({ buttonLabel }){
             </FormGroup>
             <FormGroup>
                 <Input
+
                     placeholder='Telefone'
                     value={phone}
                     onChange={(event) => setPhone(event.target.value)}
