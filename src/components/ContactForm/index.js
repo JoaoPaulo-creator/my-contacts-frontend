@@ -20,7 +20,6 @@ export default function ContactForm({ buttonLabel }){
     const { setError, removeError, getErrorByFieldName } = useErrors()
 
 
-
     function handleNameChange(event){
         setName(event.target.value)
 
@@ -35,7 +34,6 @@ export default function ContactForm({ buttonLabel }){
         setEmail(event.target.value)
 
         if(event.target.value && !isEmailValid(event.target.value)){
-            // verificando se erro já existe
             setError({ field: 'email', message: 'E-mail inválido'})
         }else{
             removeError('email')
