@@ -7,6 +7,7 @@ import Input from '../Input'
 import Select from '../Select'
 import Button from '../Button'
 import { useState } from 'react'
+import useErrors from '../../hooks/useError'
 
 
 export default function ContactForm({ buttonLabel }){
@@ -15,21 +16,18 @@ export default function ContactForm({ buttonLabel }){
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [category, setCategory] = useState('')
-    const [errors, setErrors] = useState([])
+
+    const { setError, removeError, getErrorByFieldName } = useErrors()
+
 
 
     function handleNameChange(event){
         setName(event.target.value)
 
         if(!event.target.value){
-            setErrors((prevState) => [
-                ...prevState,
-                {field: 'name', message: 'Nome é obrigatório'}
-            ])
+            setError({ field: 'name', message: 'Nome é obrigatório'})
         }else {
-            setErrors((prevState) => prevState.filter(
-                (error) => error.field !== 'name'
-            ))
+            removeError('name')
         }
     }
 
@@ -38,28 +36,11 @@ export default function ContactForm({ buttonLabel }){
 
         if(event.target.value && !isEmailValid(event.target.value)){
             // verificando se erro já existe
-            const errorAlreadyExists = errors.find((error) => error.field === 'email')
-
-            if (errorAlreadyExists){
-                return
-            }
-
-
-            setErrors((prevState) => [
-                ...prevState,
-                {field: 'email', message: 'E-mail é obrigatório'}
-            ])
+            setError({ field: 'email', message: 'E-mail inválido'})
         }else{
-            setErrors((prevState) => prevState.filter(
-                (error) => error.field !== 'email'
-            ))
+            removeError('email')
         }
     }
-
-    function getErrorByFieldName(fieldName){
-        return errors.find((error) => error.field === fieldName)?.message
-    }
-
 
     console.log(getErrorByFieldName('name'))
 
