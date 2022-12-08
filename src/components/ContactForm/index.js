@@ -70,7 +70,7 @@ export default function ContactForm({ buttonLabel }){
             >
                 <Input
                     error={getErrorByFieldName('name')}
-                    placeholder='Nome'
+                    placeholder='Nome *'
                     value={name}
                     onChange={handleNameChange}
                 />
