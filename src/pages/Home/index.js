@@ -8,14 +8,32 @@ import {
     InputSearchContainer
  } from './styles'
 
-
+import formatPhone from '../../utils/formatPhone'
 import arrow from '../../assets/images/icons/arrow.svg'
 import edit from '../../assets/images/icons/edit.svg'
 import trash from '../../assets/images/icons/trash.svg'
+import { useEffect, useState } from 'react'
 //import Modal from '../../components/Modal'
 
 
 export default function Home(){
+
+    const [contacts, setContacts] = useState([])
+
+    useEffect(() => {
+        fetch('http://localhost:3001/contacts')
+            .then(async (response) => {
+                const json = await response.json()
+                setContacts(json)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    }, [])  // adicionado esse array vazio, para que a requisição seja executação somente uma vez.
+            // Obs.: O nome do array é: Array de dependências
+
+    console.log(contacts)
+
     return (
         <Container>
             {/*
@@ -32,7 +50,10 @@ export default function Home(){
 
 
             <Header>
-                <strong>3 Contatos</strong>
+                <strong>
+                    {contacts.length}
+                    {contacts.length === 1 ? ' Contato' : ' Contatos'}
+                </strong>
                 <Link to='/new'>Novo Contato</Link>
             </Header>
 
@@ -45,32 +66,34 @@ export default function Home(){
                     </button>
                 </header>
 
-                <Card>
-                    <div className='info'>
-                        <div className='contact-name'>
-                            <strong>Joao Paulo</strong>
-                            <small>Instagram</small>
+
+                {contacts.map((contact) => (
+                    <Card key={contact.id}>
+                        <div className='info'>
+                            <div className='contact-name'>
+                                <strong>{contact.name}</strong>
+                                {contact.category_name && (
+                                    <small>{contact.category_name}</small>
+                                )}
+                            </div>
+                            <span>{contact.email}</span>
+                            <span>{formatPhone(contact.phone)}</span>
                         </div>
-                        <span>joao@teste.com</span>
-                        <span>(41) 99999-9999</span>
-                    </div>
 
-                    <div className='actions'>
-                        <Link to='/edit/123'>
-                            <img src={edit} alt='edit'></img>
-                        </Link>
+                        <div className='actions'>
+                            <Link to={`/edit/${contact.id}`}> {/*Redirecionando para uma tela de um contato especifico*/}
+                                <img src={edit} alt='edit'></img>
+                            </Link>
 
-                        <button type='button'>
-                            <img src={trash} alt='delete'></img>
-                        </button>
-                    </div>
-                </Card>
+                            <button type='button'>
+                                <img src={trash} alt='delete'></img>
+                            </button>
+                        </div>
+                    </Card>
+                ))}
+
 
             </ListContainer>
         </Container>
     )
 }
-
-fetch('http://localhost:3001/contacts')
-    .then((response) => console.log(response))
-    .catch((error) => console.error(error))
