@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import {
     Container,
     Header,
-    ListContainer,
+    ListHeader,
     Card,
     InputSearchContainer
  } from './styles'
@@ -19,9 +19,10 @@ import { useEffect, useState } from 'react'
 export default function Home(){
 
     const [contacts, setContacts] = useState([])
+    const [orderBy, setOrderBy] = useState('asc')
 
     useEffect(() => {
-        fetch('http://localhost:3001/contacts')
+        fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
             .then(async (response) => {
                 const json = await response.json()
                 setContacts(json)
@@ -29,10 +30,20 @@ export default function Home(){
             .catch((error) => {
                 console.error(error)
             })
-    }, [])  // adicionado esse array vazio, para que a requisição seja executação somente uma vez.
+    }, [orderBy])  // adicionado esse array vazio, para que a requisição seja executação somente uma vez.
             // Obs.: O nome do array é: Array de dependências
+            /*
+            Atualizando comentário: Adicionado o state orderBy, para que seja possível alterar o estado da lista de contatos
+            dentro do array, eu indico para que o react que o estado seja alterado somente uma vez. Na prática, que seja
+            alterado o estado e renderizando a lista de contatos sempre que for clicado no botão de ordenação
+            */
 
-    console.log(contacts)
+
+    function handleToggleOrderBy() {
+        setOrderBy(
+            (prevState) => (prevState === 'asc' ? 'desc' : 'asc')
+        )
+    }
 
     return (
         <Container>
@@ -58,16 +69,14 @@ export default function Home(){
             </Header>
 
 
-            <ListContainer>
-                <header>
-                    <button type='button' className='sort-button'>
-                        <span>Nome</span>
-                        <img src={arrow} alt='Arrow ordenação' />
-                    </button>
-                </header>
+            <ListHeader orderBy={orderBy}>
+                <button type='button' className='sort-button' onClick={handleToggleOrderBy}>
+                    <span>Nome</span>
+                    <img src={arrow} alt='Arrow ordenação' />
+                </button>
+            </ListHeader>
 
-
-                {contacts.map((contact) => (
+            {contacts.map((contact) => (
                     <Card key={contact.id}>
                         <div className='info'>
                             <div className='contact-name'>
@@ -92,8 +101,6 @@ export default function Home(){
                     </Card>
                 ))}
 
-
-            </ListContainer>
         </Container>
     )
 }
