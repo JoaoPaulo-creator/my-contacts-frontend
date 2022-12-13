@@ -20,6 +20,20 @@ export default function Home(){
 
     const [contacts, setContacts] = useState([])
     const [orderBy, setOrderBy] = useState('asc')
+    const [searchTerm, setSearchTerm] = useState('')
+
+    // Filtrando e verificando se o contato digitado na barra de pesquisa existe e será incluído na nova lista
+    // Na prática, quando incluso na nova lista criada pelo filter, então somente aqueles contatos, que estão na lista
+    // deverão renderizar/aparecer na tela.
+
+
+    const filteredContacts = contacts.filter((contact) => (
+        /*
+        Alternativas: É possível utilizar as funções startsWith() ou endsWith() no lugar do includes
+        , para que assim a pesquisa só traga um contato caso este comece ou termine, com certos caractéres digitados
+        */
+        contact.name.toUpperCase().includes(searchTerm.toUpperCase())
+    ))
 
     useEffect(() => {
         fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
@@ -45,6 +59,13 @@ export default function Home(){
         )
     }
 
+    // toda função passada em um event listener, precisam de um argumento para receber esses eventos
+    function handleChangeSarchTerm(event) {
+        setSearchTerm(event.target.value)
+    }
+
+
+
     return (
         <Container>
             {/*
@@ -56,27 +77,35 @@ export default function Home(){
             {/* <Modal danger /> */}
 
             <InputSearchContainer>
-                <input type="text" placeholder="Pesquise pelo nome"/>
+                <input
+                    value={searchTerm}
+                    type="text"
+                    placeholder="Pesquise pelo nome"
+                    onChange={handleChangeSarchTerm}
+                />
+
             </InputSearchContainer>
 
 
             <Header>
                 <strong>
-                    {contacts.length}
-                    {contacts.length === 1 ? ' Contato' : ' Contatos'}
+                    {filteredContacts.length}
+                    {filteredContacts.length === 1 ? ' Contato' : ' Contatos'}
                 </strong>
                 <Link to='/new'>Novo Contato</Link>
             </Header>
 
 
-            <ListHeader orderBy={orderBy}>
+            {filteredContacts.length > 1 && (
+                <ListHeader orderBy={orderBy}>
                 <button type='button' className='sort-button' onClick={handleToggleOrderBy}>
                     <span>Nome</span>
                     <img src={arrow} alt='Arrow ordenação' />
                 </button>
             </ListHeader>
+            )}
 
-            {contacts.map((contact) => (
+            {filteredContacts.map((contact) => (
                     <Card key={contact.id}>
                         <div className='info'>
                             <div className='contact-name'>
