@@ -12,7 +12,7 @@ import formatPhone from '../../utils/formatPhone'
 import arrow from '../../assets/images/icons/arrow.svg'
 import edit from '../../assets/images/icons/edit.svg'
 import trash from '../../assets/images/icons/trash.svg'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 //import Modal from '../../components/Modal'
 
 
@@ -27,13 +27,17 @@ export default function Home(){
     // deverão renderizar/aparecer na tela.
 
 
-    const filteredContacts = contacts.filter((contact) => (
+    // useMemo é um hook que guarda em cache o estado da lista de contatos, para que a lista não seja carregada/renderizada
+    // toda vez que o usuário digite uma letra, por exemplo.
+    const filteredContacts = useMemo(() => contacts.filter((contact) => (
         /*
         Alternativas: É possível utilizar as funções startsWith() ou endsWith() no lugar do includes
         , para que assim a pesquisa só traga um contato caso este comece ou termine, com certos caractéres digitados
         */
         contact.name.toUpperCase().includes(searchTerm.toUpperCase())
-    ))
+    )), [contacts, searchTerm])
+
+
 
     useEffect(() => {
         fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
