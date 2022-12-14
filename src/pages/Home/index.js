@@ -9,7 +9,6 @@ import {
  } from './styles'
 
 import formatPhone from '../../utils/formatPhone'
-import delay from '../../utils/delay'
 
 import arrow from '../../assets/images/icons/arrow.svg'
 import edit from '../../assets/images/icons/edit.svg'
