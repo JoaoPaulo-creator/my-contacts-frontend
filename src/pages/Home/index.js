@@ -9,11 +9,15 @@ import {
  } from './styles'
 
 import formatPhone from '../../utils/formatPhone'
+import delay from '../../utils/delay'
+
 import arrow from '../../assets/images/icons/arrow.svg'
 import edit from '../../assets/images/icons/edit.svg'
 import trash from '../../assets/images/icons/trash.svg'
+import Loader from '../../components/Loader'
+
 import { useEffect, useState, useMemo } from 'react'
-//import Modal from '../../components/Modal'
+
 
 
 export default function Home(){
@@ -21,6 +25,7 @@ export default function Home(){
     const [contacts, setContacts] = useState([])
     const [orderBy, setOrderBy] = useState('asc')
     const [searchTerm, setSearchTerm] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
 
     // Filtrando e verificando se o contato digitado na barra de pesquisa existe e será incluído na nova lista
     // Na prática, quando incluso na nova lista criada pelo filter, então somente aqueles contatos, que estão na lista
@@ -39,15 +44,37 @@ export default function Home(){
 
 
 
+    /*
+    Funções de efeito (as funções "principais" criadas dentro de um useEffect), não podem ser assíncronas.
+    Essas funções são síncronas, para evitar race condition, porém não há restrições que impessam a criação
+    de funções síncronas dentro da função de efeito, que possam ser assíncronas.
+    */
+
     useEffect(() => {
-        fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
-            .then(async (response) => {
+
+        async function loadContact(){
+            try {
+
+                setIsLoading(true)
+
+                const response = await fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
+
+                await delay(2)
+
+
                 const json = await response.json()
                 setContacts(json)
-            })
-            .catch((error) => {
-                console.error(error)
-            })
+
+            } catch (error) {
+                console.error('error', error)
+            } finally {
+                setIsLoading(false)
+            }
+
+        }
+
+        loadContact()
+
     }, [orderBy])  // adicionado esse array vazio, para que a requisição seja executação somente uma vez.
             // Obs.: O nome do array é: Array de dependências
             /*
@@ -79,6 +106,8 @@ export default function Home(){
                 Sendo assim, o parâmetro falso deveria ser escrito: danger={false}
                 */}
             {/* <Modal danger /> */}
+
+            <Loader isLoading={isLoading}/>
 
             <InputSearchContainer>
                 <input
