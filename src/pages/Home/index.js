@@ -17,7 +17,7 @@ import trash from '../../assets/images/icons/trash.svg'
 import Loader from '../../components/Loader'
 
 import { useEffect, useState, useMemo } from 'react'
-
+import ContactsService from '../../services/ContactsService'
 
 
 export default function Home(){
@@ -54,17 +54,9 @@ export default function Home(){
 
         async function loadContact(){
             try {
-
                 setIsLoading(true)
-
-                const response = await fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
-
-                await delay(2)
-
-
-                const json = await response.json()
-                setContacts(json)
-
+                const contactsList = await ContactsService.listContacts(orderBy)
+                setContacts(contactsList)
             } catch (error) {
                 console.error('error', error)
             } finally {
