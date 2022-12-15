@@ -55,9 +55,15 @@ export default function Home(){
             try {
                 setIsLoading(true)
                 const contactsList = await ContactsService.listContacts(orderBy)
-                setContacts(contactsList)
+
+                if(contactsList){
+                    setContacts(contactsList)
+                }else {
+                    console.error('Erro')
+                }
+
             } catch (error) {
-                console.error('error', error)
+                console.log('error', error)
             } finally {
                 setIsLoading(false)
             }
