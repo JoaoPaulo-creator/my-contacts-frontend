@@ -5,7 +5,8 @@ import {
     Header,
     ListHeader,
     Card,
-    InputSearchContainer
+    InputSearchContainer,
+    ErrorContainer
  } from './styles'
 
 import formatPhone from '../../utils/formatPhone'
@@ -14,10 +15,12 @@ import arrow from '../../assets/images/icons/arrow.svg'
 import edit from '../../assets/images/icons/edit.svg'
 import trash from '../../assets/images/icons/trash.svg'
 import Loader from '../../components/Loader'
+import sad from '../../assets/images/icons/sad.svg'
+
 
 import { useEffect, useState, useMemo } from 'react'
 import ContactsService from '../../services/ContactsService'
-
+import Button from '../../components/Button'
 
 export default function Home(){
 
@@ -25,6 +28,7 @@ export default function Home(){
     const [orderBy, setOrderBy] = useState('asc')
     const [searchTerm, setSearchTerm] = useState('')
     const [isLoading, setIsLoading] = useState(true)
+    const [hasError, setHasError] = useState(false)
 
     // Filtrando e verificando se o contato digitado na barra de pesquisa existe e será incluído na nova lista
     // Na prática, quando incluso na nova lista criada pelo filter, então somente aqueles contatos, que estão na lista
@@ -62,10 +66,8 @@ export default function Home(){
                     console.error('Erro')
                 }
 
-            } catch (error) {
-                console.log('Name ->', error.name)
-                console.log(error.response)
-                console.log(error)
+            } catch {
+                setHasError(true)
             } finally {
                 setIsLoading(false)
             }
@@ -95,7 +97,6 @@ export default function Home(){
     }
 
 
-
     return (
         <Container>
             {/*
@@ -118,14 +119,27 @@ export default function Home(){
 
             </InputSearchContainer>
 
-
-            <Header>
-                <strong>
-                    {filteredContacts.length}
-                    {filteredContacts.length === 1 ? ' Contato' : ' Contatos'}
-                </strong>
+            {/* Uma prop recebendo como valor, o state de erro */}
+            <Header onError={hasError}>
+                {/* Se nao houver erro, entao renderiza a lista de contatos */}
+                {!hasError && (
+                    <strong>
+                        {filteredContacts.length}
+                        {filteredContacts.length === 1 ? ' Contato' : ' Contatos'}
+                    </strong>
+                )}
                 <Link to='/new'>Novo Contato</Link>
             </Header>
+
+            {hasError && (
+                <ErrorContainer>
+                    <img src={sad} alt="ErrorImage" />
+                    <div className="details">
+                        <strong>Ocorreu um erro ao obter seus contatos!</strong>
+                        <Button type='button'>Tentar novamente</Button>
+                    </div>
+                </ErrorContainer>
+            )}
 
 
             {filteredContacts.length > 1 && (
