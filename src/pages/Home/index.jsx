@@ -53,29 +53,23 @@ export default function Home(){
     de funções síncronas dentro da função de efeito, que possam ser assíncronas.
     */
 
+   async function loadContact(){
+       try {
+           setIsLoading(true)
+           const contactsList = await ContactsService.listContacts(orderBy)
+
+           setHasError(false)
+           setContacts(contactsList)
+       } catch {
+           setHasError(true)
+       } finally {
+           setIsLoading(false)
+       }
+
+   }
     useEffect(() => {
 
-        async function loadContact(){
-            try {
-                setIsLoading(true)
-                const contactsList = await ContactsService.listContacts(orderBy)
-
-                if(contactsList){
-                    setContacts(contactsList)
-                }else {
-                    console.error('Erro')
-                }
-
-            } catch {
-                setHasError(true)
-            } finally {
-                setIsLoading(false)
-            }
-
-        }
-
         loadContact()
-
     }, [orderBy])  // adicionado esse array vazio, para que a requisição seja executação somente uma vez.
             // Obs.: O nome do array é: Array de dependências
             /*
@@ -94,6 +88,10 @@ export default function Home(){
     // toda função passada em um event listener, precisam de um argumento para receber esses eventos
     function handleChangeSarchTerm(event) {
         setSearchTerm(event.target.value)
+    }
+
+    function handleTryAgain (){
+        loadContact()
     }
 
 
@@ -136,13 +134,15 @@ export default function Home(){
                     <img src={sad} alt="ErrorImage" />
                     <div className="details">
                         <strong>Ocorreu um erro ao obter seus contatos!</strong>
-                        <Button type='button'>Tentar novamente</Button>
+                        <Button type='button' onClick={handleTryAgain}>Tentar novamente</Button>
                     </div>
                 </ErrorContainer>
             )}
 
 
-            {filteredContacts.length > 1 && (
+            {!hasError && (
+                <>
+                    {filteredContacts.length > 1 && (
                 <ListHeader orderBy={orderBy}>
                 <button type='button' className='sort-button' onClick={handleToggleOrderBy}>
                     <span>Nome</span>
@@ -174,7 +174,10 @@ export default function Home(){
                             </button>
                         </div>
                     </Card>
-                ))}
+            ))}
+
+                </>
+            )}
 
         </Container>
     )
