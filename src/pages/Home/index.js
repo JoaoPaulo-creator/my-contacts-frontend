@@ -63,7 +63,9 @@ export default function Home(){
                 }
 
             } catch (error) {
-                console.log('error', error)
+                console.log('Name ->', error.name)
+                console.log(error.response)
+                console.log(error)
             } finally {
                 setIsLoading(false)
             }

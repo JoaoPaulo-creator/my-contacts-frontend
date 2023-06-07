@@ -1,4 +1,5 @@
 import delay from '../../utils/delay'
+import APIError from '../../errors/APIError'
 
 export default class HttpClient {
 
@@ -25,7 +26,7 @@ export default class HttpClient {
         /*
          Utilizando de optional chaining para verificar se o valor do body é null ou undefined
          */
-        throw new Error(body?.error || `${response.status}` - `${response.statusText}`    )
+        throw new APIError(response, body)
     }
 
 }
