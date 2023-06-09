@@ -7,6 +7,8 @@ import {
     Card,
     InputSearchContainer,
     ErrorContainer,
+    EmptyListContainer,
+    SearchNotFoundContainer,
 } from "./styles";
 
 import formatPhone from "../../utils/formatPhone";
@@ -16,6 +18,8 @@ import edit from "../../assets/images/icons/edit.svg";
 import trash from "../../assets/images/icons/trash.svg";
 import Loader from "../../components/Loader";
 import sad from "../../assets/images/icons/sad.svg";
+import emptyBox from "../../assets/images/icons/empty-box.svg";
+import magnifierQuestion from "../../assets/images/icons/magnifier-question.svg";
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import ContactsService from "../../services/ContactsService";
@@ -55,6 +59,7 @@ export default function Home() {
     const loadContacts = useCallback(async () => {
         try {
             setIsLoading(true);
+
             const contactsList = await ContactsService.listContacts(orderBy);
 
             setHasError(false);
@@ -121,19 +126,29 @@ export default function Home() {
 
             <Loader isLoading={isLoading} />
 
-            <InputSearchContainer>
-                <input
-                    value={searchTerm}
-                    type="text"
-                    placeholder="Pesquise pelo nome"
-                    onChange={handleChangeSarchTerm}
-                />
-            </InputSearchContainer>
+            {contacts.length > 0 && (
+                <InputSearchContainer>
+                    <input
+                        value={searchTerm}
+                        type="text"
+                        placeholder="Pesquise pelo nome"
+                        onChange={handleChangeSarchTerm}
+                    />
+                </InputSearchContainer>
+            )}
 
             {/* Uma prop recebendo como valor, o state de erro */}
-            <Header onError={hasError}>
+            <Header
+                justifyContent={
+                    hasError
+                        ? "flex-end"
+                        : contacts.length > 0
+                        ? "space-between"
+                        : "center"
+                }
+            >
                 {/* Se nao houver erro, entao renderiza a lista de contatos */}
-                {!hasError && (
+                {!hasError && contacts.length > 0 && (
                     <strong>
                         {filteredContacts.length}
                         {filteredContacts.length === 1
@@ -158,6 +173,31 @@ export default function Home() {
 
             {!hasError && (
                 <>
+                    {contacts.length === 0 && !isLoading && (
+                        <EmptyListContainer>
+                            <img src={emptyBox} alt="emptyBox" />
+                            <p>
+                                Você ainda não tem nenhum contato cadastrado!
+                                Clique no botão <strong>”Novo contato”</strong>{" "}
+                                à cima para cadastrar o seu primeiro!
+                            </p>
+                        </EmptyListContainer>
+                    )}
+
+                    {contacts.length > 0 && filteredContacts.length < 1 && (
+                        <SearchNotFoundContainer>
+                            <img
+                                src={magnifierQuestion}
+                                alt="Magnifier question"
+                            />
+
+                            <span>
+                                Nenhum resultado foi encontrado para{" "}
+                                <strong>”{searchTerm}”</strong>.
+                            </span>
+                        </SearchNotFoundContainer>
+                    )}
+
                     {filteredContacts.length > 1 && (
                         <ListHeader orderBy={orderBy}>
                             <button
