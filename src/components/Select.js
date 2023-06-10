@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 
 export default styled.select`
+    cursor: pointer;
     width: 100%;
     border: none;
     background: #fff;
