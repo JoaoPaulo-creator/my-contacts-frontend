@@ -19,4 +19,9 @@ export default styled.select`
         border-color: ${({ theme }) => theme.colors.primary.main};
     }
 
+    // com os colchetes, eh possivel selecionar uma propriedade nativa de uma tag html
+    &[disabled] {
+        background-color: ${({ theme }) => theme.colors.gray[100]};
+        border-color: ${({ theme }) => theme.colors.gray[100]};
+    }
 `
