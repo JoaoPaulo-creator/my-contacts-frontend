@@ -13,9 +13,10 @@ export default function NewContact(){
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
-                category_id: formData.categoryId
+                category_id: !formData.categoryId ? null : formData.categoryId
             }
 
+            console.log(contactData)
             const response = await ContactsService.createContact(contactData)
             console.log(response)
         } catch (error) {
