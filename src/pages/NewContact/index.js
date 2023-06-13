@@ -3,8 +3,6 @@ import ContactForm from '../../components/ContactForm'
 import ContactsService from '../../services/ContactsService'
 
 
-
-
 export default function NewContact(){
     async function handleSubmit(formData){
 
@@ -13,7 +11,7 @@ export default function NewContact(){
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
-                category_id: !formData.categoryId ? null : formData.categoryId
+                category_id: formData.categoryId
             }
 
             console.log(contactData)
