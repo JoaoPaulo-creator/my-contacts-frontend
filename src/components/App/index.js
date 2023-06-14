@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Container } from './styles'
 import Header from '../Header'
 import Routes from '../../routes'
+import ToastContainer from '../Toasts/ToastContainer'
 
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
     <BrowserRouter>
         <ThemeProvider theme={defaultTheme}>
         <GlobalStyles />
-
+        <ToastContainer />
             <Container>
                 <Header />
                 <Routes />
