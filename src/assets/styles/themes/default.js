@@ -14,10 +14,13 @@ export default {
             200: '#BCBCBC',
             100: '#E6E6E6'
         },
-         danger: {
-            light: '#F97171',
-            main: '#FC5050',
-            dark: '#F63131'
-         }
+        danger: {
+          light: '#F97171',
+          main: '#FC5050',
+          dark: '#F63131'
+        },
+        success: {
+          main: '#51CA73'
+        }
     }
 }
