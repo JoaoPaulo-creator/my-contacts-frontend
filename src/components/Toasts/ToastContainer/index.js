@@ -1,28 +1,23 @@
 import { Container } from "./styles";
 import ToastMessage from "../ToastMessage";
 import { useState, useEffect } from "react";
+import { toastEventManager } from "../../../utils/toast";
 
 export default function ToastContainer() {
-
-  const messageList = [
-    { id: Math.random(), type: "default", text: "Default text" },
-    { id: Math.random(), type: "danger", text: "Danger text" },
-    { id: Math.random(), type: "success", text: "Success text" },
-  ];
 
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
 
-    function handleAddToast(event) {
-      const { type, text } = event.detail
+    function handleAddToast({ type, text }) {
+
       setMessages((prevState) => [
         ...prevState,
-        {id: Math.random(), type, text}
+        { id: Math.random(), type, text }
       ])
     }
 
-    document.addEventListener('addtoast', handleAddToast)
+    toastEventManager.on('addtoast', handleAddToast)
 
     return () => {
       /**
@@ -33,7 +28,7 @@ export default function ToastContainer() {
        * Exemplo: Se ocorre um erro na request de cadastro de contato, o toast de erro será montado uma vez a cada
        * erro emitido pelo back. Se tentei cadastrar um usuário que já 3 vezes, logo 3 mensagens de erro serão emitidas
        * */
-      document.removeEventListener('addtoast', handleAddToast)
+      toastEventManager.removeListener('addtoast', handleAddToast)
     }
   })
 
