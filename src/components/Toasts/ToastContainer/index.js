@@ -30,13 +30,22 @@ export default function ToastContainer() {
        * */
       toastEventManager.removeListener('addtoast', handleAddToast)
     }
-  })
+  }, [])
+
+
+  function handleRemoveMessage(id) {
+    setMessages((prevState) => prevState.filter((message) => message.id !== id))
+  }
 
 
   return (
     <Container>
-      {messages.map(({ id, type, text }) => (
-        <ToastMessage key={id} type={type} text={text} />
+      {messages.map((message) => (
+        <ToastMessage
+          key={message.id}
+          message={message}
+          onRemoveMessage={handleRemoveMessage} //funcao de callback para poder executar do component filho para o component pai
+        />
       ))}
     </Container>
   )
