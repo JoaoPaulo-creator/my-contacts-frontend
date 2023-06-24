@@ -9,7 +9,6 @@ export default class EventManager {
       this.listeners.set(event, [])
     }
 
-
     this.listeners.get(event).push(listener)
   }
 
@@ -19,8 +18,8 @@ export default class EventManager {
     }
 
     // pegando os listener do evento, e percorrendo cada um deles
-    this.listerner.get(event).forEach((listener) => {
-      listener(payload)
+    this.listeners.get(event).forEach((l) => {
+      l(payload)
     })
   }
 
