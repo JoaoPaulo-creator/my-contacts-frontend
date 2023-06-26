@@ -2,7 +2,7 @@ import EventManager from "../lib/EventManager"
 
 export const toastEventManager = new EventManager()
 
-export default function toast({ type, text }) {
+export default function toast({ type, text, duration }) {
 
   /**
   * @arguments
@@ -10,5 +10,5 @@ export default function toast({ type, text }) {
   *  - details: detalhes do evento emitido, contendo mensagem do toast, etc.
   */
 
-  toastEventManager.emit('addtoast', { type, text })
+  toastEventManager.emit('addtoast', { type, text, duration })
 }
