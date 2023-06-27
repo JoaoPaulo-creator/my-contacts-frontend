@@ -184,7 +184,7 @@ export default function Home() {
               <img src={emptyBox} alt="emptyBox" />
               <p>
                 Você ainda não tem nenhum contato cadastrado! Clique no botão{" "}
-                <strong>”Novo contato”</strong> à cima para cadastrar o seu
+                <strong>”Novo contato”</strong> acima para cadastrar o seu
                 primeiro!
               </p>
             </EmptyListContainer>

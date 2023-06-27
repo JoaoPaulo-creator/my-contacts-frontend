@@ -73,6 +73,12 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
         setIsSubmitting(true)
         await onSubmit(contactData)
         setIsSubmitting(false)
+
+        setName('')
+        setEmail('')
+        setPhone('')
+        setCategoryId('')
+
     }
 
 
