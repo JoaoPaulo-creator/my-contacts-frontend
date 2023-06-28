@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ContactForm from "../../components/ContactForm";
 import PageHeader from "../../components/PageHeader";
 import { useParams,  } from 'react-router-dom'
@@ -13,6 +13,16 @@ export default function EditContact(){
 
   const [isLoading, setIsLoading] = useState(true)
 
+
+  /**
+   * @docs
+   * Esta eh a referencia criada no componente pai.
+   * Esta referencia foi passada para o componente filho, ao qual quero acessar de forma imperativa
+   *
+   * */
+  const contactFormRef = useRef(null)
+
+
   const history = useHistory()
   const { id } = useParams()
 
@@ -22,6 +32,10 @@ export default function EditContact(){
     async function loadContact(){
       try{
         const contactData = await ContactsService.getContactById(id)
+
+        contactFormRef.current.setFieldsValues(contactData)
+
+
         console.log(contactData)
         setIsLoading(false)
 
@@ -51,8 +65,9 @@ export default function EditContact(){
           />
 
           <ContactForm
-              buttonLabel='Salvar Alterações'
-              onSubmit={handleSubmit}
+            ref={contactFormRef}
+            buttonLabel='Salvar Alterações'
+            onSubmit={handleSubmit}
           />
 
       </>
