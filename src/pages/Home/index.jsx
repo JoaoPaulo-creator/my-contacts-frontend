@@ -24,6 +24,7 @@ import magnifierQuestion from "../../assets/images/icons/magnifier-question.svg"
 import { useEffect, useState, useMemo, useCallback } from "react";
 import ContactsService from "../../services/ContactsService";
 import Button from "../../components/Button";
+import Modal from "../../components/Modal";
 
 export default function Home() {
   const [contacts, setContacts] = useState([]);
@@ -114,12 +115,14 @@ export default function Home() {
     loadContacts();
   }
 
-  async function handleDeleteContact(id) {
-    await fetch(`http://localhost:3001/contacts/${id}`, {
-      method: "DELETE",
-    });
+  async function handleDeleteContact(id, name) {
+    // await fetch(`http://localhost:3001/contacts/${id}`, {
+    //   method: "DELETE",
+    // });
 
-    setContacts((prevData) => prevData.filter((c) => c.id !== id));
+    // setContacts((prevData) => prevData.filter((c) => c.id !== id));
+
+    alert(`Tem certeza que deseja excluir o contato ${name}?`);
   }
 
   return (
@@ -133,6 +136,18 @@ export default function Home() {
       {/* <Modal danger /> */}
 
       <Loader isLoading={isLoading} />
+
+      <Modal
+        danger={true}
+        title={"Teste"}
+        cancelLabel={"Cancelar"}
+        confirmLabel={"Deletar"}
+        onCancel={() => alert("Cancelou")}
+        onConfirm={() => alert("Confirmou")}
+      >
+        <h1>Teste h1</h1>
+        <strong>Teste 2</strong>
+      </Modal>
 
       {contacts.length > 0 && (
         <InputSearchContainer>
@@ -236,7 +251,7 @@ export default function Home() {
 
                 <button
                   type="button"
-                  onClick={() => handleDeleteContact(contact.id)}
+                  onClick={() => handleDeleteContact(contact.id, contact.name)}
                 >
                   <img src={trash} alt="delete"></img>
                 </button>
