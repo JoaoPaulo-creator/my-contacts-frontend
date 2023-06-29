@@ -62,6 +62,13 @@ const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
         setEmail(contact.email ?? '')
         setPhone(formatPhone(contact.phone) ?? '')
         setCategoryId(contact.category_id ?? '')
+      },
+
+      resetFields: (contact) => {
+        setName('')
+        setEmail('')
+        setPhone('')
+        setCategoryId('')
       }
     }
   }, [])
@@ -102,7 +109,7 @@ const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
       setPhone(formatPhone(event.target.value))
   }
 
-  console.log(getErrorByFieldName('name'))
+
 
   async function handleSubmit(event){
       event.preventDefault()
@@ -111,12 +118,6 @@ const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
       setIsSubmitting(true)
       await onSubmit(contactData)
       setIsSubmitting(false)
-
-      setName('')
-      setEmail('')
-      setPhone('')
-      setCategoryId('')
-
   }
 
 

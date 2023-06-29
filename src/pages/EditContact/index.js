@@ -36,8 +36,6 @@ export default function EditContact(){
 
         contactFormRef.current.setFieldsValues(contact)
 
-
-        console.log(contact)
         setIsLoading(false)
         setName(contact.name)
       }catch (error) {
@@ -53,8 +51,35 @@ export default function EditContact(){
     loadContact()
   }, [id, history])
 
-  function handleSubmit(){
-    console.log('')
+  async function handleSubmit(formData){
+
+    try {
+        const contactData = {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            category_id: formData.categoryId
+        }
+
+        const updatedContact = await ContactsService.updateContact(id, contactData)
+        setName(updatedContact.name)
+
+        toast(
+          {
+            type: 'success',
+            text: 'Contato editado com sucesso!',
+            duration: 3000
+          }
+        )
+
+    } catch (error) {
+        toast(
+          {
+            type: 'danger',
+            text: 'Ocorreu um erro ao editar o contato'
+          }
+        )
+    }
   }
 
   return (

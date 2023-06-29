@@ -18,6 +18,13 @@ export default class HttpClient {
             headers: options?.headers
         })
     }
+    put(path, options){
+        return this.makeRequest(path, {
+            method: 'PUT',
+            body: options?.body,
+            headers: options?.headers
+        })
+    }
 
     async makeRequest(path, options) {
         await delay(0.5)
