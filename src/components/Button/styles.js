@@ -25,8 +25,8 @@ export const StyledButton = styled.button`
     }
 
     &[disabled]{
-        background: #bcbcbc;
-        cursor: default;
+        background: #bcbcbc !important;
+        cursor: default !important;
     }
 
 

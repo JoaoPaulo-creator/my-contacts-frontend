@@ -8,9 +8,14 @@ import PropTypes from "prop-types";
 */
 export default function Button({ type, disabled, isLoading, children, danger, onClick }) {
     return (
-        <StyledButton type={type} disabled={disabled || isLoading} danger={danger} onClick={onClick}>
-            {!isLoading && children}
-            {isLoading && <Spinner size={16}/>}
+        <StyledButton
+          type={type}
+          disabled={disabled || isLoading}
+          danger={danger}
+          onClick={onClick}
+        >
+          {!isLoading && children}
+          {isLoading && <Spinner size={16}/>}
         </StyledButton>
     )
 }

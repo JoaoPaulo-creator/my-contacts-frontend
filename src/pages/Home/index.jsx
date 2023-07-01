@@ -20,6 +20,7 @@ import Loader from "../../components/Loader";
 import sad from "../../assets/images/icons/sad.svg";
 import emptyBox from "../../assets/images/icons/empty-box.svg";
 import magnifierQuestion from "../../assets/images/icons/magnifier-question.svg";
+import toast from "../../utils/toast";
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import ContactsService from "../../services/ContactsService";
@@ -32,6 +33,10 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [contactBeingDeleted, setContactBeingDeleted] = useState(null);
+
+  const [isLoadingDelete, setIsloadindDelete] = useState(false);
 
   // Filtrando e verificando se o contato digitado na barra de pesquisa existe e será incluído na nova lista
   // Na prática, quando incluso na nova lista criada pelo filter, então somente aqueles contatos, que estão na lista
@@ -115,14 +120,40 @@ export default function Home() {
     loadContacts();
   }
 
-  async function handleDeleteContact(id, name) {
-    // await fetch(`http://localhost:3001/contacts/${id}`, {
-    //   method: "DELETE",
-    // });
+  async function handleDeleteContact(contact) {
+    setContactBeingDeleted(contact);
+    setIsDeleteModalVisible(true);
+  }
 
-    // setContacts((prevData) => prevData.filter((c) => c.id !== id));
+  function handleCloseDeleteModal() {
+    setIsDeleteModalVisible(false);
+    setContactBeingDeleted(null);
+  }
 
-    alert(`Tem certeza que deseja excluir o contato ${name}?`);
+  async function handleConfirmDelete() {
+    try {
+      setIsloadindDelete(true);
+      await ContactsService.deleteContact(contactBeingDeleted.id);
+
+      handleCloseDeleteModal();
+
+      toast({
+        type: "success",
+        text: "Contato excluido com sucesso!",
+      });
+    } catch (error) {
+      toast({
+        type: "danger",
+        text: "Ocorreu um erro ao tentar excluir o contato",
+      });
+    } finally {
+      setIsloadindDelete(false);
+    }
+
+    //setIsDeleteModalVisible(false);
+    setContacts((prevState) =>
+      prevState.filter((c) => c.id !== contactBeingDeleted.id)
+    );
   }
 
   return (
@@ -139,14 +170,15 @@ export default function Home() {
 
       <Modal
         danger={true}
-        title={"Teste"}
+        visible={isDeleteModalVisible}
+        title={`Tem certeza que deseja excluir o contato "${contactBeingDeleted?.name}"`}
+        isLoading={isLoadingDelete}
         cancelLabel={"Cancelar"}
         confirmLabel={"Deletar"}
-        onCancel={() => alert("Cancelou")}
-        onConfirm={() => alert("Confirmou")}
+        onCancel={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
       >
-        <h1>Teste h1</h1>
-        <strong>Teste 2</strong>
+        <p>Esta ação não pode ser desfeita</p>
       </Modal>
 
       {contacts.length > 0 && (
@@ -251,9 +283,9 @@ export default function Home() {
 
                 <button
                   type="button"
-                  onClick={() => handleDeleteContact(contact.id, contact.name)}
+                  onClick={() => handleDeleteContact(contact)}
                 >
-                  <img src={trash} alt="delete"></img>
+                  <img src={trash} alt="delete" />
                 </button>
               </div>
             </Card>
